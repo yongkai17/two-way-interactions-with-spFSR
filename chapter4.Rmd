@@ -1,0 +1,141 @@
+---
+output: pdf_document
+---
+
+# Identifying Interactions with SP-FSR Algorithm \label{spFSRheading}
+
+## A Primer in SP-FSR Algorithm
+
+SP-FSR is built on Simultaneous Perturbation Stochastic Approximation (SPSA) developed by @spall. Here, we first outline SPSA and then describe how @vural apply the binary version of SPSA (BSPSA) [@wang] for feature selection. Lastly, we summarise how @zeren improve BSPSA using non-monotone Barzilai & Borwein (BB) search method. 
+
+Let $\mathcal{L}: \mathbb{R}^{p} \mapsto \mathbb{R}$ be a loss function whose functional form is not explicitly known, but its noise measurement can be observed as:
+
+\begin{center}
+  \begin{align}
+  y(w) & := \mathcal{L}(w) + \varepsilon(w) \label{noisefunction}
+  \end{align}
+\end{center}
+
+$\varepsilon$ is the noise, $y$ is the noise measurement and $w \in D \subset \mathbb{R}^{p}$. Let $g(w): = \nabla \mathcal{L} = \frac{\partial \mathcal{L} }{\partial w}$ be the gradient of $\mathcal{L}$. Starting with a random guess $\hat{w}_{0}$, SPSA moves toward the optimal solution $w^{*}$ recursively via:
+
+$$\hat{w}_{k+1} := \hat{w}_{k} - a_k \hat{g}(\hat{w}_{k})$$
+
+$a_{k} \geq 0$ is an iteration gain sequence whereas $\hat{g}(\hat{w}_{k})$ is the approximate gradient at $\hat{w}_{k}$ at iteration $k$. At each $k$, $\hat{w}_{k}$ is perturbed simultaneously by random offsets, $\pm c_k\Delta_k$ generated from a predetermined symmetric distribution. $c_k$ is a non-negative gradient gain sequence while $\Delta_k$ is known as the simultaneous perturbation vector. $\{\Delta_k\}_{k=1}$ must be a mutually independent sequence and also independent of $\{\hat{w}_{k}\}_{k=0}$. A Bernouli distribution with zero mean is usually used to generate $\Delta_k$. The simultaneous perturbations around $\hat{w}_{k}$ is given by:
+
+$$\hat{w}_{k+1}^{\pm} := \hat{w}_{k} \pm c_k\Delta_k$$
+
+At iteration $k$, the noisy measurements of $\hat{w}^{\pm}_k$ become:
+
+$$y^{+}_k:=\mathcal{L}(\hat{w}_k + c_k \Delta_k) + \varepsilon_{k}^{+}$$ 
+$$y^{-}_k:=\mathcal{L}(\hat{w}_k - c_k \Delta_k) + \varepsilon_{k}^{-}$$
+Subsequently,
+
+\begin{center}
+  \begin{align*}
+  \hat{g}_k(\hat{w}_k):&=\bigg[ \frac{y^{+}_k-y^{-}_k}{w^{+}_{k1}-w^{-}_{k1}},...,\frac{y^{+}_k-y^{-}_k}{w^{+}_{kp}-w^{-}_{kp}} \bigg]^{T} = \frac{y^{+}_k-y^{-}_k}{2c_k}[\Delta_{k1}^{-1},...,\Delta_{kp}^{-1}]^{T}
+  \end{align*}
+\end{center}
+
+$y^{+}_k$ and $y^{-}_k$ are used to approximate the gradient. $y(\hat{w}_{k+1})$ is used to compute the performance of iteration $k+1$. @spall2 offers more theoretical elaboration about SPSA, which we shall not proceed further. In a binary version of SPSA (BSPSA), the domain of the loss function becomes $D = \{0,1\}^{p}$ and the gain sequence $c_k$ is constant, say $c_k=c$ whereas $\hat{w}_k^{\pm}$ are bounded and rounded before evaluating $y_k^{\pm}$. 
+
+@vural formulate a feature selection as follow. Given a nonempty feature subset $\bold{X}' \subset \bold{X}$, we define 
+$\mathcal{L}_{\mathbb{M}}(\bold{X}', Y)$ as the true but unknown value of performance criterion for a wrapper model, $\mathbb{M}$. As we shall show in next chapter, we use linear and logistic regression models as wrappers in our computational experiment. We train $\mathbb{M}$ by evaluating a specified error measure, $y_{\mathbb{M}}(\bold{X}', Y)$. The error measures include mean squared error (MSE) for regression task and misclassification error rate for classifier model. In BSPSA, the error measure is the noisy measurement function. Equation \ref{noisefunction} hence can be expressed as $y_{\mathbb{M}} = \mathcal{L}_{\mathbb{M}} + \varepsilon$. Essentially, the wrapper feature selection problem aims to determine an optimal feature subset $\bold{X}^{*}$:
+
+\begin{center}
+  \begin{align}
+    \bold{X}^{*} := \arg \min_{ \bold{X}' \subset \bold{X} }y_{\mathbb{M}}(\bold{X}', Y) \label{bspsa}
+  \end{align}
+\end{center}
+
+Equation \ref{bspsa} is the basis of the initial version of SP-FSR. Using a non-monotone Barzilai & Borwein search method [@bb], @zeren speed up the convergence of rate of Equation \ref{bspsa} by losing a mimimal amout of accuracy performance (based on the pre-specified error measure). We shall not discuss the Barzilai & Borwein method further, but highlight the important modifications proposed by @zeren. @zeren estimate the gain sequence by:
+
+
+\begin{center}
+  \begin{align}
+    \hat{a}_k &= \frac{\nabla{\hat{w}_k}^T\nabla{\hat{g}(\hat{w}_k)}}{\nabla{\hat{g}^T(\hat{w}_k)}\nabla{\hat{g}(\hat{w}_k)}} \label{eqn3.8}
+  \end{align}
+\end{center}
+
+To ensure its non-negativity, a closed boundary is imposed on the current gain (Equation \ref{eqn3.8}):
+
+\begin{center}
+  \begin{align*}
+    \hat{a}_k^{'} &= \max\{a_{\min},\min\{\hat{a}_k,a_{\max}\}\}
+  \end{align*}
+\end{center}
+
+$a_{\min}$ and $a_{\max}$ are the minimum and the maximum of gain sequence $\{\hat{a}_k\}_{k}$ at the current iteration $k$. Compared to the initial version, SP-FSR smooths the gains by averaging their values at the current and last two iterations, leading in a decrease in coverage time. To reduce distortion in convergence direction, the current $\hat{g_k}(\hat{w_k})$ and its $m$ predecessors are averaged.
+
+In summary, SP-FSR is refined to converge much faster than the original version proposed by @vural, at a small expense in the loss function. Algorithm \ref{spFSR} summarises the pseudo code of SP-FSR which is adapted from @zeren. Note that it was previously known as "SPSA-FS" but it was renamed as "SP-FSR". SP-FSR has no stopping rule; hence it requires the maximum number of iterations, i.e. $M$ in Algorithm \ref{spFSR}. SP-FSR requires to fine-tune the initial solution $\hat{w}_0$ and gradient gain constant $c$. @vural recommend $\hat{w}_0 = [0.5, 0.5, ..., 0.5 ]^{T}$ and $c=0.05$.
+
+@spFSR develop an extension library (package) to implement the SP-FSR algorithm in `R`. This package is called `spFSR`. We implement Two-Step SP-FSR with this package.
+
+\begin{algorithm}
+\caption{SP-FSR Algorithm} \label{spFSR}
+\begin{algorithmic}[1]
+  \Procedure{\underline{SP-FSR}($\hat{w}_0$, $c$, $M$)}{}
+    \BState Initialise $k = 0$, $m=0$
+    \BState \textbf{do}:
+    \State Simulate $\Delta_{k, j} \sim \text{Bernoulli}(-1, +1)$ with $\mathbb{P}(\Delta_{k, j}=1) = \mathbb{P}(\Delta_{k, j}=-1) = 0.5$
+    \State $\hat{w}^{\pm}_k = \hat{w}_{k} \pm c \Delta_k$
+    \State $\hat{w}^{\pm}_k = B(\hat{w}^{\pm}_k)$ \Comment{$B( \bullet)$ = component-wise $[0,1]$ operator }
+    \State $\hat{w}^{\pm}_k = R(\hat{w}^{\pm}_k)$ \Comment{$R( \bullet)$ = component-wise rounding operator}
+    \State $y^{\pm}_k =\mathcal{L}(\hat{w}_k \pm c_k \Delta_k) \pm \varepsilon_{k}^{\pm}$
+    \State $\hat{g}_k(\hat{w}_k) =\bigg( \frac{y^{+}_k-y^{-}_k}{2c}\bigg)[\Delta_{k1}^{-1},...,\Delta_{kp}^{-1}]^{T}$ \Comment{$\hat{g}_k(\hat{w}_k)$ = the gradient estimate}
+    
+    \State $\hat{g_k}(\hat{w_k}) = \frac{1}{m+1}\sum_{n=k-m}^k{\hat{g_{n}}(\hat{w_{k}})}$ \Comment{Gradient Averaging}
+    
+    \State $\hat{a}_k = \frac{\nabla{\hat{w}}^T\nabla{\hat{g}(\hat{w})}}{\nabla{\hat{g}^T(\hat{w})}\nabla{\hat{g}(\hat{w})}}$ \Comment{$\hat{a}_k$ = BB Step Size}
+    
+    \If{$\hat{a}_{k}<0$}
+      \State $\hat{a}_k = \max \bigg(\min{\{\hat{a}_{k}\}},\min\{\hat{a}_k, \max{\{\hat{a}_{k}\}}\}\bigg)$ 
+    \EndIf
+    
+    \State $\hat{a}_k = \frac{1}{t+1}\sum_{n=k-t}^k{\hat{a}_{n}}$ for $t = \min\{2, k\}$ \Comment{Gain Smoothing}
+    
+    \State $\hat{w}^{\pm}_k = \hat{w}_{k} \pm  a_k \hat{g}_k(\hat{w}_k)$
+    
+    \State $k = k + 1$, $m = k$
+    \BState \textbf{while} ($k < M$)
+    \BState \textbf{Output}: $\hat{w}^{\pm}_M = R(\hat{w}^{\pm}_M)$
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+## Two-Step SP-FSR for Learning Interactions
+
+Two-Step SP-FSR runs SP-FSR in two main steps. In the first step, given a specified error measure and a wrapper model, it selects an optimal set of main-effect features $\bold{X}' \in \bold{X}$. Then it creates a candidate set of pairwise interactions among the selected main-effect features. Let $\bold{Z}$ be the candidate set. In the second step, SP-FSR is run to search predictive interaction features from $\bold{Z}$ while keeping the significant main-effect features $\bold{X}'$ in training the wrapper. The search method effectively enforces a strong hierarchy: an interaction is present only if both of its main effect features are present. The outcome is a feature set of $[ \bold{X}', \bold{Z}']$ where $\bold{Z}' \in \bold{Z}$ is the optimal interaction feature subset from Step 2.
+
+Note that SP-FSR requires the number of features to be selected. Otherwise, SP-FSR will decide automatically by leveraging its stochastic optimisation structure. Two-Step SP-FSR inherits this semi-heuristic nature of SP-FSR. Therefore, the number of features selected can be determined via a grid search or an automatical mode at each step. To reduce the computational complexity, we prefer the latter approach in Two-Step SP-FSR. Similar to SP-FSR, Two-Step SP-FSR requires to specify maximum iterations, gain sequence and initial solution. Algorithm \ref{twoStepSpFSR} summarises the pseudo code of Two-Step SP-FSR.
+
+\begin{algorithm}
+\caption{Two-Step SP-FSR Algorithm} \label{twoStepSpFSR}
+\begin{algorithmic}[1]
+  \Procedure{\underline{Two-Step SP-FSR}($\hat{w}_0$, $c$, $M$, $\bold{X}$)}{}
+    \BState Run SP-FSR($\hat{w}_0$, $c$, $M$) to yield $\bold{X}' \in \bold{X}$
+    \BState Create candidate set $\bold{Z}$ from $\bold{X}'$
+    \BState Keep $\bold{X}'$ and run SP-FSR($\hat{w}_0$, $c$, $M$) to yield $\bold{Z}' \in \bold{Z}$    
+    \BState \textbf{Output}: $[ \bold{X}', \bold{Z}' ]$
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+Unlike the embedded method such as `glinternet`, Two-Step SP-FSR can compare the wrapper performances between two stages. If the first stage yields a more superior performance than the second stage, it indicates an overidentification issue, implying there might be no true interaction features. We do not strictly enforce any overidentification rule in Two-Step SP-FSR. Instead, we store both performance results so that practitioners can decide to include interactions.
+
+Let's illustrate the concept of Two-Step SP-FSR (see Algorithm \ref{twoStepSpFSR}) with the following simple example. Suppose we have a dataset of four explanatory features, $[Y, X_1, X_2, X_3, X_4]$ where $Y$ is continuous. Let use a simple linear regression as the wrapper and evaluate its with MSE. Two-Step SP-FSR discovers interactions from $[X_1, X_2, X_3, X_4]$ in the following procedure:
+
+1. Run SP-FSR and say it selects $\bold{X}' = \{X_1, X_2, X_3\}$ as the optimal main effects.
+2. Among $\bold{X}'$, the candidate set of pairwise interaction features is generated. Since three main-effect features
+are selected, the candidate set contains ${3 \choose 2 } = 3$ pairwise interaction features:
+
+$$\bold{Z} = \{X_{1:2}, X_{1:3}, X_{2:3}\}$$
+
+3. By keeping $\bold{X}'$, run SP-FSR to search for the optimal interaction feature subset $\bold{Z}' \in \bold{Z}$. Say $\bold{Z}' = \{X_{1:2}, X_{1:3}\}$.
+4. The final set of both main-effect and interaction features is:
+
+$$[ \bold{X}', \bold{Z}'] = \{X_1, X_2, X_3, X_{1:2}, X_{1:3}\}$$
+
+5. (Optional) The trained linear regression model (link function) hence becomes:
+
+$$\mathbb{E}(Y) = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3 + \beta_{1:2}X_{1:2} + \beta_{1:3}X_{1:3}$$

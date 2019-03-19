@@ -1,0 +1,146 @@
+---
+title: 'MATH1298 Chapter 5: Model Selection and Evaluation'
+subtitle: 'Addtional material: Feature selection under presence of interaction terms - a very brief coverage'
+author: "Vural Aksakalli & Yong Kai Wong"
+date: "4 Oct 2018"
+output:
+  beamer_presentation:
+    citation_package: natbib
+    theme: "Madrid"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+link-citations: yes
+referencecolor: blue
+citationcolor: blue
+bibliography: ref.bib
+---
+
+# Background
+
+* A motivating example: do gene interactions help predict cancer type?
+* How to determine interactions in high dimensions *optimally*?
+* Focus on pairwise interaction terms (no quadratic terms)
+* Given $p$ features with 2-way pairwise interaction terms, the number of possible features is 
+
+$$p + {p\choose2} = \frac{p(p+1)}{2}$$
+
+* Side question: what is the number of possible features if we include quadratic terms?
+* **Not in examination**
+
+# Notations and terminology
+
+* $Y$: response feature
+* $X_{j}$: explanatory feature $j$ for $j=1,2,...p$
+* Model formulation:
+
+$$g(Y) = \beta_0 + \sum_{j=1}^{p}\beta_j X_{j} + \sum_{i<j}\beta_{i:j}X_{j}X_{i}$$
+
+* A precise definition [@glinternet, p.1]: 
+
+> \color{blue}"When a function $f(x_1, x_2)$ cannot be expressed as $h_1(x_1) + h_2(x_2)$ for some functions $h_1$ and $h_2$, we say that there is an interaction in $f$ between $x_1$ and $x_2$."\color{black}
+
+* Introduction of "hierarchy"
+
+# Terminology: hierarchy
+
+@glinternet define:
+
+\begin{center}
+  \begin{tabular}{| l | p{6.5cm} |}
+    \hline
+     Hierarchy & Description\\
+    \hline
+    Strong & Interactions are only among pairs of nonzero main effects \\ \hline
+    Weak   & Each interaction has only one of its main effects present \\ \hline
+    Anti-hierarchical & Interactions are only among pairs of main effects that are not present \\ \hline
+    Pure interaction & No main effects present; only interactions \\
+    \hline
+  \end{tabular}
+\end{center}
+
+# Terminology: an example of hierarchy
+
+Consider three explanatory features: $\bold{X} = \{X_1, X_2, X_3\}$
+
+1. Strong hierarchy: $\{X_1, X_2, X_1X_2\}$
+2. Weak hierarchy:  $\{X_1, X_1X_2, X_1X_3\}$
+3. Anti-hierarchical: $\{X_2, X_1X_3\}$
+4. Pure interaction: $\{X_2X_3, X_1X_3, X_1X_2\}$
+
+\color{red}In practice, how do we know? How can we detect?\color{black}
+
+# Main methods to identify pairwise interaction terms
+
+1. Statistical hypothesis test [@Cox1984]
+2. Regularisation, e.g. LASSO
+3. Wrapper Feature Selection [@wrapper]
+
+# Statistical hypothesis test: an example
+
+Considers two models:
+
+1. $g(Y) = \beta_0 + \beta_1X_1 + \beta_2X_2$
+2. $g(Y) = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_{1:2}X_1X_2$
+
+Run hypothesis on test on $\beta_{1:2} = 0$.
+
+# Regularisation: `glinternet`
+
+* Let $l(y_i; \beta)$ be the **negative** log-likelihood contribution
+* Elastic-net [@glmnet]
+
+\begin{center}
+  \begin{align*}
+    \arg \min_{\beta}\frac{1}{n}\sum_{i=i}^{n}l(y_i; \beta) + \lambda[(1-\alpha)\parallel\beta\parallel^{2}_{2}/2+\alpha\parallel\beta\parallel_1]
+  \end{align*}
+\end{center}
+
+* `glinternet` [@glinternet]: group-based LASSO ($\alpha = 1$) by imposing additional constraints on $\beta_{k:j}$ and $\beta_{j}$
+* `glinternet` package is available in R
+
+# Wrapper feature selection
+
+Extending feature selection by including interaction terms
+
+1. SFFS: Sequential (Floating) Forward Selection [@SFFS]
+2. \color{red}~~SFBS: Sequential (Floating) Backward Selection~~\color{black} [-@SFFS]
+2. \color{blue} SP-FSR [-@vural]\color{black}
+
+# SP-FSR algorithm
+
+* Introduced by @vural
+* Based on Simultaneous Perturbation Stochastic Approximation [@spall]
+* Refined by @zeren
+* Pseudo gradient descent method on the loss function
+* `spFSR` package is available in R [@spFSR]
+
+# SP-FSR algorithm to identify interactions
+
+* Assume a strong hierarchy
+* Simplified version of **two-step SP-FSR** algorithm:
+
+1. Identify the optimal set of $k$ main effects using SP-FSR
+2. Search $k'$, number of interactions from $k$ main effects with SP-FSR
+
+* $k$ and $k'$ can be determined via grid search or automatically
+* GitHub link: https://github.com/yongkai17/n-way-spFSR
+
+# Limitations
+
+Both algorithms
+
+* Only two-way interaction terms under strong hierarchy
+* Both incorporate cross-validation. Why is this a limitation?
+
+`glinternet`
+
+* Applicable to regression and logistic classification problems only.
+* Not available for log-log and probit regression models.
+
+SP-FSR algorithm
+
+* Not available for Poisson regression which is not available in `mlr`
+* Implementation in `R` hence slow
+* Not experiment with other binary models yet.
+
+# References

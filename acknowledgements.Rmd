@@ -1,0 +1,9 @@
+---
+output: pdf_document
+---
+
+I would first like to thank my thesis supervisor Dr. Vural Aksakalli for his motivation, continuous support and expert knowledge. Not only he was a dedicated supervisor, but also a role model. His wit and guidance have steered me in the right direction in my works and beyond. I have learnt a lot from him. I feel grateful to have him as my supervisor. 
+
+Besides Dr. Vural, I would like to express my gratitude to Dr. Babak Abbasi, Dr. Zeren D. Yenice, Dr. Alev Taskin Gumus and Mr Niranjan Adhikari for their previous works on the SP-FSR algorithm. Without their brilliant ideas and contributions, I would not have been even able to kick-start my thesis. I would also like to thank Dr. Haydar Demirhan for sharing his valuable experience in developing statistical software - one of the crucial ingredients in completing my minor thesis.
+
+Last but not least, I am very thankful for my family and my partner - Lin Xin Kin for unyielding support throughout my years of study. Thank you.

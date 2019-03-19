@@ -1,0 +1,40 @@
+---
+output: pdf_document
+---
+\begin{centering}
+
+{\scshape\LARGE RMIT University \par}\vspace{1.5cm}
+
+\Huge
+{\bf Identifying Optimal Set of Pairwise Interaction Terms by SP-FSR Algorithm and
+  Empirical Comparison with Other Methods}
+
+
+\begin{minipage}[t]{0.4\textwidth}
+  \begin{flushleft} \large
+  \emph{Author:}\\
+    Yong Kai Wong
+  \end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+  \begin{flushright} \large
+  \emph{Supervisor:} \\
+    Dr. Vural Aksakalli
+  \end{flushright}
+\end{minipage}
+
+\vfill
+
+\normalsize 
+
+\textit{A minor thesis submitted in partial fulfilment of the requirements for \\
+        the Master of Statistics and Operations Research}\\[0.3cm] 
+\textit{in the}\\[0.4cm]
+
+\normalsize School of Science
+
+\vfill
+
+{\large \today}\\[4cm] 
+
+\end{centering}

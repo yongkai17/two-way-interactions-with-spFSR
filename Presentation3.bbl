@@ -1,0 +1,79 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aksakalli and Malekipirbazari(2016)]{vural}
+Vural Aksakalli and Milad Malekipirbazari.
+\newblock Feature selection via binary simultaneous perturbation stochastic
+  approximation.
+\newblock \emph{Pattern Recognition Letters}, 75\penalty0 (Supplement
+  C):\penalty0 41 -- 47, 2016.
+\newblock ISSN 0167-8655.
+\newblock \doi{https://doi.org/10.1016/j.patrec.2016.03.002}.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S0167865516000702}.
+
+\bibitem[Aksakalli et~al.(2018)Aksakalli, Abbasi, and Wong]{spFSR}
+Vural Aksakalli, Babak Abbasi, and Yong~Kai Wong.
+\newblock \emph{spFSR: Feature Selection and Ranking by Simultaneous
+  Perturbation Stochastic Approximation}, 2018.
+\newblock https://www.featureranking.com/, https://arxiv.org/abs/1804.05589.
+
+\bibitem[Cox(1984)]{Cox1984}
+D.~R. Cox.
+\newblock Interaction.
+\newblock \emph{International Statistical Review / Revue Internationale de
+  Statistique}, 52\penalty0 (1):\penalty0 1--24, 1984.
+\newblock URL \url{http://www.jstor.org/stable/1403235}.
+
+\bibitem[Friedman et~al.(2010)Friedman, Hastie, and Tibshirani]{glmnet}
+Jerome Friedman, Trevor Hastie, and Rob Tibshirani.
+\newblock Regularization paths for generalized linear models via coordinate
+  descent.
+\newblock \emph{Journal of Statistical Software, Articles}, 33\penalty0
+  (1):\penalty0 1--22, 2010.
+\newblock ISSN 1548-7660.
+\newblock \doi{10.18637/jss.v033.i01}.
+\newblock URL \url{https://www.jstatsoft.org/v033/i01}.
+
+\bibitem[Kohavi and John(1997)]{wrapper}
+R.~Kohavi and G.H. John.
+\newblock Wrappers for feature subset selection.
+\newblock \emph{Artificial Intelligence}, 1\penalty0 (2):\penalty0 273--324,
+  1997.
+
+\bibitem[Lim and Hastie(2018)]{glinternet}
+Michael Lim and Trevor Hastie.
+\newblock \emph{glinternet: Learning Interactions via Hierarchical Group-Lasso
+  Regularization}, 2018.
+\newblock URL \url{https://CRAN.R-project.org/package=glinternet}.
+\newblock R package version 1.0.7.
+
+\bibitem[Pudil et~al.(1994)Pudil, Ferri, Novovicova, and Kittler]{SFFS}
+P.~Pudil, F.~J. Ferri, J.~Novovicova, and J.~Kittler.
+\newblock Floating search methods for feature selection with nonmonotonic
+  criterion functions.
+\newblock In \emph{Proceedings of the 12th IAPR International Conference on
+  Pattern Recognition, Vol. 3 - Conference C: Signal Processing (Cat.
+  No.94CH3440-5)}, volume~2, pages 279--283 vol.2, Oct 1994.
+\newblock \doi{10.1109/ICPR.1994.576920}.
+
+\bibitem[Spall(1992)]{spall}
+{James C.} Spall.
+\newblock Multivariate stochastic approximation using a simultaneous
+  perturbation gradient approximation.
+\newblock \emph{IEEE}, 37\penalty0 (3):\penalty0 322--341, 3 1992.
+
+\bibitem[Yenice et~al.(2018)Yenice, Adhikari, Wong, Aksakalli, Gumus, and
+  Abbasi]{zeren}
+Zeren~D. Yenice, Niranjan Adhikari, Yong~Kai Wong, Vural Aksakalli, Alev~Taskin
+  Gumus, and Babak Abbasi.
+\newblock Spsa-fsr: Simultaneous perturbation stochastic approximation in
+  feature selection and ranking.
+\newblock 2018.
+\newblock URL \url{https://arxiv.org/abs/1804.05589}.
+
+\end{thebibliography}

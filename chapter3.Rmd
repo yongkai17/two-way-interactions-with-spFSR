@@ -1,0 +1,45 @@
+---
+output: pdf_document
+---
+
+# Existing Approaches \label{RelatedApproaches}
+
+In this chapter, we briefly discuss some wrapper methods and an embedded method used to discover interactions. We explain why we choose some of these methods in our computational experiments.
+
+## Wrapper Methods
+
+As mentioned in Chapter \ref{intro}, wrapper methods are applied to the expanded set of main-effect and interaction features. As a result, the strong hierarchy might not hold. To address this shortcoming, a solution is first to identify both relevant main and interaction effects, and then include the omitted main-effect features from the identified interactions into the selection. Wrapper methods which can incorporate this approach are SFS, SFFS and GA. SBS or SBFS are ruled out because they require $p < n$ so that the backward elimination can work. 
+
+SFFS performs better than SFS since it validates the possibility of improvement of the performance criterion when some feature is excluded [@SFFS]. However, as we shall show in Chapter \ref{study}, we include SFS as an alternative to SFFS since the latter runs into a stall in some experiments. We also do not include SODA [@yangli] in comparison since this method is restricted with EBIC whereas our experiments require other evaluation measures. As a result, we choose SFS, SFFS and GA as our competitor wrapper methods. 
+
+## Embedded Method
+
+@glinternet develop **g**roup-**l**asso **inter**action **net**work (`glinternet`) by imposing a penalty function $p(\beta)$ on the coefficients when minimising the log function, $\mathcal{L}(Y; \beta)$ as follows:
+
+\begin{center}
+  \begin{align}
+    \arg \min_{\beta}\mathcal{L}(Y; \beta) + \lambda p(\beta) \label{glinternet}
+  \end{align}
+\end{center}
+
+$\lambda$ is the tuning parameter where $\lambda > 0$. $\lambda$ can be determined via a grid search with cross validations. If $Y$ is continuous, the loss function is a squared-error loss:
+
+\begin{center}
+  \begin{align*}
+    \mathcal{L}(Y; \beta) & = \frac{1}{2}\Bigg[Y - \Big(\beta_0 + \sum_{j=1}^{p} \beta_{j}X_{j} + \sum_{j < k } \beta_{j:k} X_{j:k}\Big) \Bigg]^{2}
+  \end{align*}
+\end{center}
+
+For a binary response, the loss function is given by:
+
+\begin{center}
+  \begin{align*}
+    \mathcal{L}(Y; \beta) & = -\Bigg[Y^{T}\Big( \beta_0 + \sum_{j=1}^{p} \beta_{j}X_{j} + \sum_{j < k } \beta_{j:k} X_{j:k} \Big) - \bold{1}^{T} \log \Big( \bold{1} + \exp(\beta_0 + \sum_{j=1}^{p} \beta_{j}X_{j} + \sum_{j < k } \beta_{j:k} X_{j:k}  )  \Big) \Bigg]
+  \end{align*}
+\end{center}
+
+$\bold{1}$ is an $n$-vector of ones. The penalty function specification depends on the feature types of $\bold{X}$. For example, if all (main-effects) explanatory features are continuous, $p(\beta)$ becomes:
+
+$$p(\beta) = \sum_{j=1}^{p} |\beta_{j}| + \sum_{j < k } ||\beta_{j:k}||_2$$
+
+$|\cdot|$ and $||\cdot||_2$ are absolute value and Euclidean norms. For more details, @glinternet provide more theoretical explanations, including penalty specifications for interactions between categorical and continuous explanatory features, and interactions among categorical explanatory features as well. The authors developed an extension library (package) for `glinternet` [-@glinternet] in `R` - a statistical computing language.

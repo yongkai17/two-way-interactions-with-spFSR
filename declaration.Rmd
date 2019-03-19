@@ -1,0 +1,22 @@
+---
+output: pdf_document
+---
+
+\Large {\bf  Declaration}
+
+
+\normalsize
+
+I certify that: 
+
+* the work of the thesis is my own, except where due acknowledgement has been made;
+*	no part of work in this minor thesis has been submitted previously to qualify for any other academic award;
+*	the content of the minor thesis is the result of work which has been carried out since the official enrollment date of the course; 
+*	any editorial work carried out by a third party is acknowledged;
+*	the ethics procedures and guidelines have been followed;
+*	the work was supervised by Dr Vural Aksakalli.
+
+\begin{flushright} 
+{\bf Yong Kai Wong} \\
+\emph{\today}
+\end{flushright}

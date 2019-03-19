@@ -1,0 +1,35 @@
+\frametitle{Limitations}
+
+Both algorithms
+
+\begin{itemize}
+\tightlist
+\item
+  Only two-way interaction terms under strong hierarchy
+\item
+  Both incorporate cross-validation. Why is this a limitation?
+\end{itemize}
+
+\texttt{glinternet}
+
+\begin{itemize}
+\tightlist
+\item
+  Applicable to regression and logistic classification problems only.
+\item
+  Not available for log-log and probit regression models.
+\end{itemize}
+
+SP-FSR algorithm
+
+\begin{itemize}
+\tightlist
+\item
+  Not available for Poisson regression which is not available in
+  \texttt{mlr}
+\item
+  Implementation in \texttt{R} hence slow
+\item
+  Not experiment with other binary models yet.
+\end{itemize}
+

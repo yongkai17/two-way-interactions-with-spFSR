@@ -1,0 +1,35 @@
+\linespread{1}
+% You know, for landscape
+\usepackage{lscape}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    linkcolor  = {blue}
+}
+
+% Make new page before each section
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
+% Highlight inline `code`
+\usepackage{soul}
+\usepackage{xcolor}
+
+\definecolor{Light}{gray}{.95}
+\sethlcolor{Light}
+
+\let\OldTexttt\texttt
+\renewcommand{\texttt}[1]{\OldTexttt{\hl{#1}}}
+
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%

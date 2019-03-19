@@ -1,0 +1,134 @@
+---
+output:
+  pdf_document:
+    fig_caption: yes
+    number_sections: yes
+bibliography: ref.bib
+link-citations: yes
+urlcolor: blue
+linkcolor: blue
+fontsize: 11pt
+geometry: margin = 1.2in
+header-includes:
+- \usepackage{placeins}
+- \usepackage{fancyhdr}
+- \usepackage{setspace}
+- \usepackage{chngcntr}
+- \usepackage{multirow}
+- \usepackage[labelfont=bf]{caption}
+- \counterwithin{figure}{section}
+- \counterwithin{table}{section}
+- \usepackage{algorithm}
+- \usepackage[noend]{algpseudocode}
+- \makeatletter
+- \def\BState{\State\hskip-\ALG@thistlm}
+- \makeatother
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+\pagenumbering{gobble}
+
+```{r child = 'titlepage.Rmd'}
+```
+
+\newpage
+
+```{r child = 'declaration.Rmd'}
+```
+
+\newpage
+\pagestyle{fancy}
+
+\fancyhead[LE,RO]{}
+\fancyhead[LO,RE]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\pagenumbering{roman}
+
+\fancyhead[CO,CE]{Abstract}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+```{r child = 'Abstract.Rmd'}
+```
+
+\newpage
+\fancyhead[CO,CE]{Acknowledgements}
+\section*{Acknowledgements}
+\addcontentsline{toc}{section}{Acknowledgements}
+
+```{r child = 'acknowledgements.Rmd'}
+```
+
+\newpage
+\fancyhead[CO,CE]{Table of Contents}
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+\fancyhead[CO,CE]{List of Figures and Tables}
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+
+\newpage
+\pagenumbering{arabic}
+
+\newpage
+\fancyhead[CO,CE]{Introduction}
+
+```{r child = 'chapter1.Rmd'}
+```
+
+\newpage
+\fancyhead[CO,CE]{Background}
+
+```{r child = 'chapter2.Rmd'}
+```
+
+
+\newpage
+\fancyhead[CO,CE]{Existing Approaches}
+
+```{r child = 'chapter3.Rmd'}
+```
+
+\newpage
+\fancyhead[CO,CE]{SP-FSR Algorithm}
+
+```{r child = 'chapter4.Rmd'}
+```
+
+
+\newpage
+\fancyhead[CO,CE]{Experimental Studies}
+
+```{r child = 'chapter5.Rmd'}
+```
+
+
+\newpage
+\fancyhead[CO,CE]{Conclusion}
+
+```{r child = 'chapter6.Rmd'}
+```
+
+\newpage
+\fancyhead[CO,CE]{Appendix I: R Source Codes}
+\section*{Appendix I}
+\addcontentsline{toc}{section}{Appendix: R Source Codes}
+
+```{r child = 'Appendix2.Rmd'}
+```
+
+
+\FloatBarrier\newpage\fancyhead[CO,CE]{References}
+
+# References
